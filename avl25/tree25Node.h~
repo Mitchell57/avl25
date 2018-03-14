@@ -1,0 +1,18 @@
+// tree25Node.h - defines the 2-5 tree node structure
+// Mitchell Lewis, 3-10-18
+
+#ifndef TREE25NODE_H
+#define TREE25NODE_H
+
+#include <string>
+
+using namespace std;
+
+class tree25Node {
+
+  
+ public:
+
+  // Constructor & Destructor
+  tree25Node()
+}
