@@ -1,4 +1,4 @@
-// main.cpp - Testing and Time-checking of BST and Hash Table implementations
+// main.cpp - Testing and Time-checking of AVL and 2-5 tree implementations
 // Mitchell Lewis, Sean Costello
 
 #include <sys/types.h>
@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "HashTable.h"
+
 
 using namespace std;
 
@@ -29,7 +29,7 @@ void read_directory(const string& name, vector<string>* v){
 
 // Parse_text - Takes a pathname and vector address, and adds words to vector from file as long as they are
 // alphabetical and do not match any of the stopwords
-void parse_text(const string& name, vector<string>* v){
+void parse_text(const string& name, vector<string>* v, unordered_map<string, int>* stopwords ){
   ifstream inFile(name);
   string str;
 
@@ -39,12 +39,11 @@ void parse_text(const string& name, vector<string>* v){
     bool not_stopword = true;
     for(int i=0; str[i]; i++) str[i] = tolower(str[i]);
 
-    for(unsigned int i=0; i<stopwords.size(); i++){
-      if(str.compare(stopwords.at(i)) == 0){
-	not_stopword = false;
-	break;
-      }
+   
+    if(stopwords->at(str) == 1){
+		not_stopword = false;
     }
+    
     if(all_alpha && not_stopword)
       v->push_back(str);
   }
@@ -74,10 +73,19 @@ int main(){
     }
   }
 
+  // builds map of stopwords for efficient checking
+  ifstream inFile(stopwords.txt);
+  string sw;
+  std::unordered_map<string, int> stopwords;
+  while(inFile >> sw){
+  	stopwords.insert(sw, 1);
+  }
+  inFile.close();
+
   // parses the text from each filename found and adds eligible words to list
   vector<string> words;
   for(unsigned int i = 0; i<filenames.size(); i++){
-    parse_text(filenames.at(i), &words);
+    parse_text(filenames.at(i), &words, &stopwords);
   }
 
   //initializes trees and inserts all words from list
@@ -96,7 +104,7 @@ int main(){
   */
 
   // Timing tests - sorts words, then grabs 100 words to test times
-  ifstream inFile("sorted.txt");
+  ifstream inFile("stopwords.txt");
   vector<string> testSet;
   string str;
   while(testSet.size() <= 100 && inFile >> str){
@@ -171,77 +179,77 @@ int main(){
       case 1:
 	{
 	  cin >> w;
-	  auto start = std::chrono::high_resolution_clock::now();
-          int result = ht->search(w);
-          auto stop = std::chrono::high_resolution_clock::now();
+		auto start = std::chrono::high_resolution_clock::now();
+	    int result = 0 //ht->search(w);
+	    auto stop = std::chrono::high_resolution_clock::now();
 
-	  std::chrono::duration<double, std::milli> execTime = stop - start;
-	  if(result == -1)
-	    cout << "false" << endl;
-	  else
-	    cout << "true" << endl;
-	  cout << "Hash: " << execTime.count() << endl;
-	  break;
+		std::chrono::duration<double, std::milli> execTime = stop - start;
+		if(result == -1)
+		    cout << "false" << endl;
+		else
+		    cout << "true" << endl;
+		cout << "2-5: " << execTime.count() << endl;
+		break;
 	}
 	
       //insert
       case 2:
 	{
-	  cin >> w;
-          auto start = std::chrono::high_resolution_clock::now();
-          ht->insert(w);
-          auto stop = std::chrono::high_resolution_clock::now();
+	    cin >> w;
+        auto start = std::chrono::high_resolution_clock::now();
+        //ht->insert(w);
+        auto stop = std::chrono::high_resolution_clock::now();
 
-          std::chrono::duration<double, std::milli> execTime = stop - start;
-	  cout << "Hash: " << execTime.count() << endl;
-	  break;
+        std::chrono::duration<double, std::milli> execTime = stop - start;
+	    cout << "2-5: " << execTime.count() << endl;
+	    break;
 	}
 
       //remove
       case 3:
 	{
-	  cin >> w;
-	  auto start = std::chrono::high_resolution_clock::now();
-	  ht->remove(w);
-	  auto stop = std::chrono::high_resolution_clock::now();
+	    cin >> w;
+	    auto start = std::chrono::high_resolution_clock::now();
+	    //ht->remove(w);
+	    auto stop = std::chrono::high_resolution_clock::now();
 
-	  std::chrono::duration<double, std::milli> execTime = stop - start;
-	  cout << "Hash: " << execTime.count() << endl;
-	  break;
+	    std::chrono::duration<double, std::milli> execTime = stop - start;
+	    cout << "2-5: " << execTime.count() << endl;
+	    break;
 	}
 
       //sort
       case 4:
 	{
-	  cin >> w;
-	  auto start = std::chrono::high_resolution_clock::now();
-	  ht->sort(w);
-	  auto stop = std::chrono::high_resolution_clock::now();
+		cin >> w;
+	    auto start = std::chrono::high_resolution_clock::now();
+  	    //ht->sort(w);
+		auto stop = std::chrono::high_resolution_clock::now();
 
-	  std::chrono::duration<double, std::milli> execTime = stop - start;
-	  cout << "Hash: " << execTime.count() << endl;
-	  break;
+		std::chrono::duration<double, std::milli> execTime = stop - start;
+		cout << "2-5: " << execTime.count() << endl;
+	    break;
 	}
 
       //range search
     case 5:
       {
         string w2;
-	cin >> w;
-	cin >> w2;
-	auto start = std::chrono::high_resolution_clock::now();
-	ht->rangeSearch(w, w2);
-	auto stop = std::chrono::high_resolution_clock::now();
+		cin >> w;
+		cin >> w2;
+		auto start = std::chrono::high_resolution_clock::now();
+		//ht->rangeSearch(w, w2);
+		auto stop = std::chrono::high_resolution_clock::now();
 
-	std::chrono::duration<double, std::milli> execTime = stop-start;
-	cout << "Hash: " << execTime.count() << endl;
-	break;
+		std::chrono::duration<double, std::milli> execTime = stop-start;
+		cout << "2-5: " << execTime.count() << endl;
+		break;
       }
     default:
       {
-	cin.clear();
-	cin.ignore(10000, '\n');
-	cout << "Invalid input" << endl;
+		cin.clear();
+		cin.ignore(10000, '\n');
+		cout << "Invalid input" << endl;
       }
     }
   }

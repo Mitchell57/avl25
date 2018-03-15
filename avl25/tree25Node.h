@@ -21,6 +21,7 @@ class tree25Node {
   void add(Entry e);
   void remove(Entry e);
   void addChild(Entry e, tree25Node& child);
+  tree25Node* getParent();
   
  private:
 

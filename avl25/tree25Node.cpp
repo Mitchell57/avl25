@@ -6,9 +6,10 @@
 using namespace std;
 
 // Constructor & Destructor
-tree25Node::tree25Node(Entry eArr[], int n, ){
+tree25Node::tree25Node(Entry eArr[], int n, tree25Node* parent1){
   Entry nullEntry = new Entry("", 0);
-  data =  
+  parent = parent1;
+  
 }
  
 tree25Node::~tree25Node(){
@@ -30,9 +31,3 @@ void tree25Node::addChild(Entry e, tree25Node& child){
 tree25Node* tree25Node::getParent(){
   return parent;
 }
-
-  
-  
-};
-
-#endif
