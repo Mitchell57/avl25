@@ -34,8 +34,7 @@ void parse_text(const string& name, vector<string>* v){
   string str;
 
   while(inFile >> str){
-     vector<string> stopwords = {"a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst", "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around", "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by", "call", "can", "cannot", "cant", "co", "con", "could", "couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen", "fify", "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found", "four", "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence", "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his", "how", "however", "hundred", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its", "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me", "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my", "myself", "name", "namely", "neither", "never", "nevertheless", "next", "nine", "no", "nobody", "none", "noone", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only", "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per", "perhaps", "please", "put", "rather", "re", "same", "see", "seem", "seemed", "seeming", "seems", "serious", "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow", "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than", "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore", "therein", "thereupon", "these", "they", "thickv", "thin", "third", "this", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty", "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what", "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves", "the"};
-    
+        
     bool all_alpha  = std::regex_match(str, std::regex("^[A-Za-z']+$"));
     bool not_stopword = true;
     for(int i=0; str[i]; i++) str[i] = tolower(str[i]);
@@ -57,7 +56,7 @@ int main(){
 
   //Text parsing
   vector<string> filenames, dirnames;
-  string root = "hotels";
+  string root = "hotels-small";
 
   // retrieves subdirectory names
   read_directory(root, &dirnames);
@@ -81,10 +80,10 @@ int main(){
     parse_text(filenames.at(i), &words);
   }
 
-  //initializes HashTable and inserts all words from list
-  HashTable* ht = new HashTable(words.size());
+  //initializes trees and inserts all words from list
+  //INIT HERE
   for(unsigned int i = 0; i<words.size(); i++){
-    ht->insert(words.at(i));
+    //INSERT HERE
   }
 
   /* Timing template
@@ -97,7 +96,6 @@ int main(){
   */
 
   // Timing tests - sorts words, then grabs 100 words to test times
-  ht->sort("sorted.txt");
   ifstream inFile("sorted.txt");
   vector<string> testSet;
   string str;
@@ -109,56 +107,56 @@ int main(){
   // Search test
   auto start = std::chrono::high_resolution_clock::now();
   for(unsigned int i=0; i<testSet.size(); i++){
-    ht->search(testSet.at(i));
+    //SEARCH HERE
   }
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> execTime = stop - start;
-  cout << "Hash search time: " << execTime.count() << endl;
+  cout << "2-5 search time: " << execTime.count() << endl;
 
   //Insert Test
   start = std::chrono::high_resolution_clock::now();
   for(unsigned int i=0; i<testSet.size(); i++){
-    ht->insert(testSet.at(i));
+    // INSERT HERE
   }
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash insert time: " << execTime.count() << endl;
+  cout << "2-5 insert time: " << execTime.count() << endl;
 
   //Delete test
   start = std::chrono::high_resolution_clock::now();
   for(unsigned int i=0; i<testSet.size(); i++){
-    ht->remove(testSet.at(i));
+    // DELETE HERE
   }
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash delete time: " << execTime.count() << endl;
+  cout << "2-5 delete time: " << execTime.count() << endl;
 
   //Sort Test
   start = std::chrono::high_resolution_clock::now();
-  ht->sort("sorted.txt");
+  //ht->sort("sorted.txt");
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash sort time: " << execTime.count() << endl;
+  cout << "2-5 sort time: " << execTime.count() << endl;
 
   //Range Search for 10, 100, and 1000 words
   // Used sorted output file to choose increments of 10, 100, and 1000 words
   start = std::chrono::high_resolution_clock::now();
-  ht->rangeSearch("annual", "answers");
+  //ht->rangeSearch("annual", "answers");
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash range search (n=10): " << execTime.count() << endl;
+  cout << "2-5 range search (n=10): " << execTime.count() << endl;
 
   start = std::chrono::high_resolution_clock::now();
-  ht->rangeSearch("annual", "applied");
+  //->rangeSearch("annual", "applied");
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash range search (n=100): " << execTime.count() << endl;
+  cout << "2-5 range search (n=100): " << execTime.count() << endl;
 
   start = std::chrono::high_resolution_clock::now();
-  ht->rangeSearch("annual", "breezy");
+  //ht->rangeSearch("annual", "breezy");
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
-  cout << "Hash range search (n=1000): " << execTime.count() << endl;
+  cout << "2-5 range search (n=1000): " << execTime.count() << endl;
   
   // Test interface - Prompts input for 1-5, performs search, insert, remove, sort, and range search respectively
   while(true){

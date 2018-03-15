@@ -18,8 +18,13 @@ class tree25 {
   ~tree25();
 
   //insert
-  void insert(string word);
+  void insert(Entry e, tree25Node* root);
 
+  // helper funcs
+  void insertNonFull(Entry e);
+  void insertMax(Entry e);
+  void split(tree25Node* node);
+   
   //delete
   void remove(string word);
 
@@ -28,5 +33,12 @@ class tree25 {
 
   //range search
   void rangeSearch(string w1, string w2);
+
+ private:
+  
+  // helper funcs
+  void insertNonFull(Entry e);
+  void insertMax(Entry e);
+  void split(tree25Node* node);
 
 }

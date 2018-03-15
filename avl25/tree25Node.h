@@ -28,7 +28,8 @@ class tree25Node {
   tree25Node* children[];
   tree25Node* parent;
   int n; // Number of Entries
-
+  boolean leaf;
+  
 };
 
 #endif
