@@ -7,6 +7,11 @@ main: main.o
 main.o: main.cpp 
 	$(CXX) $(CXXFLAGS) -c main.cpp
 
+tree25: tree25.o
+	$(CXX) $(CXXFLAGS) -o tree25 tree25.o
+
+tree25.o: tree25.cpp
+	$(CXX) $(CXXFLAGS) -c tree25.cpp
 
 
 clean:

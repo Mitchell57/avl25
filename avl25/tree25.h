@@ -11,34 +11,40 @@ using namespace std;
 class tree25 {
 
  public:
-
+    struct treeNode{
+      Entry* entries;
+      treeNode** children;
+      treeNode* parent;
+      bool leaf;
+      int n;
+    };
   //Contstructor and Destructor
   tree25();
 
   ~tree25();
 
   //insert
-  void insert(Entry e, tree25Node* root);
+  void insert(string w);
+
+  treeNode* nodeInit();
+  Entry* search(string w, treeNode* x);
 
   // helper funcs
-  void insertNonFull(Entry e);
-  void insertMax(Entry e);
-  void split(tree25Node* node);
-   
+  void insertNonFull(Entry* e, treeNode* node);
+  void splitChild(treeNode* node, int i, treeNode* child);
+  void traversal(treeNode* node);
   //delete
-  void remove(string word);
-
+  //  void remove(string word);
+  treeNode* getRoot();
+  
   //sort
-  void sort(string path);
+  //  void sort(string path);
 
   //range search
-  void rangeSearch(string w1, string w2);
+  // void rangeSearch(string w1, string w2);
 
  private:
-  
-  // helper funcs
-  void insertNonFull(Entry e);
-  void insertMax(Entry e);
-  void split(tree25Node* node);
+  treeNode *root, *np, *x;
+};
 
-}
+#endif

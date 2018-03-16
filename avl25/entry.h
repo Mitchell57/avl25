@@ -11,12 +11,16 @@ using namespace std;
 
 class Entry {
  public:
-
   
   // constructor
   Entry(string w, int c) {
     this->word = w;
     this->count = c;
+  }
+
+  Entry(){
+    word = "";
+    count = 0;
   }
 
   //get funcs
