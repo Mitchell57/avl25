@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <unordered_set>
+#include "AVL.h"
 
 using namespace std;
 
@@ -92,8 +93,10 @@ int main(){
   }
   //initializes trees and inserts all words from list
   //INIT HERE
+  AVL* a = new AVL;
   for(unsigned int i = 0; i<words.size(); i++){
     //INSERT HERE
+    a->head = a->insert(words[i], a->head);
   }
 
   /* Timing template
@@ -106,7 +109,7 @@ int main(){
   */
 
   // Timing tests - sorts words, then grabs 100 words to test times
-  ifstream inFile("stopwords.txt");
+  ifstream inFile("sorted.txt");
   vector<string> testSet;
   string str;
   while(testSet.size() <= 100 && inFile >> str){
@@ -123,14 +126,32 @@ int main(){
   std::chrono::duration<double, std::milli> execTime = stop - start;
   cout << "2-5 search time: " << execTime.count() << endl;
 
+
+  start = std::chrono::high_resolution_clock::now();
+  for(unsigned int i=0; i<testSet.size(); i++){
+    a->search(testSet[i], a->head);
+  }
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL search time: " << execTime.count() << endl;
+  
   //Insert Test
   start = std::chrono::high_resolution_clock::now();
   for(unsigned int i=0; i<testSet.size(); i++){
-    // INSERT HERE
+    // INSERT aHERE
   }
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
   cout << "2-5 insert time: " << execTime.count() << endl;
+
+  start = std::chrono::high_resolution_clock::now();
+  for(unsigned int i=0; i<testSet.size(); i++){
+    // INSERT HERE
+    a->head = a->insert(testSet[i], a->head);
+  }
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL insert time: " << execTime.count() << endl;
 
   //Delete test
   start = std::chrono::high_resolution_clock::now();
@@ -141,6 +162,15 @@ int main(){
   execTime = stop - start;
   cout << "2-5 delete time: " << execTime.count() << endl;
 
+  start = std::chrono::high_resolution_clock::now();
+  for(unsigned int i=0; i<testSet.size(); i++){
+    // DELETE HERE
+    a->head = a->remove(testSet[i], a->head);
+  }
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL delete time: " << execTime.count() << endl;
+
   //Sort Test
   start = std::chrono::high_resolution_clock::now();
   //ht->sort("sorted.txt");
@@ -148,6 +178,13 @@ int main(){
   execTime = stop - start;
   cout << "2-5 sort time: " << execTime.count() << endl;
 
+  start = std::chrono::high_resolution_clock::now();
+  a->sort("sorted.txt", a->head);                                              
+  //a->print(a->head);
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL sort time: " << execTime.count() << endl;
+  
   //Range Search for 10, 100, and 1000 words
   // Used sorted output file to choose increments of 10, 100, and 1000 words
   start = std::chrono::high_resolution_clock::now();
@@ -167,6 +204,24 @@ int main(){
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
   cout << "2-5 range search (n=1000): " << execTime.count() << endl;
+
+  start = std::chrono::high_resolution_clock::now();
+  a->rangeSearch("annual", "answers", a->head);                                           
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL range search (n=10): " << execTime.count() << endl;
+
+  start = std::chrono::high_resolution_clock::now();
+  a->rangeSearch("annual", "applied", a->head);                                         
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL range search (n=100): " << execTime.count() << endl;
+
+  start = std::chrono::high_resolution_clock::now();
+  a->rangeSearch("annual", "breezy", a->head);      
+  stop = std::chrono::high_resolution_clock::now();
+  execTime = stop - start;
+  cout << "AVL range search (n=1000): " << execTime.count() << endl;
   
   // Test interface - Prompts input for 1-5, performs search, insert, remove, sort, and range search respectively
   while(true){
@@ -183,14 +238,26 @@ int main(){
 	  cin >> w;
 		auto start = std::chrono::high_resolution_clock::now();
 		int result = 0; //ht->search(w);
-	    auto stop = std::chrono::high_resolution_clock::now();
+		a->search(w, a->head);
+		auto stop = std::chrono::high_resolution_clock::now();
 
 		std::chrono::duration<double, std::milli> execTime = stop - start;
 		if(result == 0)
 		    cout << "false" << endl;
 		else
 		    cout << "true" << endl;
-		cout << "2-5: " << execTime.count() << endl;
+		cout << "AVL: " << execTime.count() << endl;
+		
+		start = std::chrono::high_resolution_clock::now();
+		result = 0; //ht->search(w);                                           
+		stop = std::chrono::high_resolution_clock::now();
+		
+		execTime = stop - start;
+                if(result == 0)
+		  cout << "false" << endl;
+                else
+		  cout << "true" << endl;
+                cout << "2-5: " << execTime.count() << "s" << endl;
 		break;
 	}
 	
@@ -198,12 +265,18 @@ int main(){
       case 2:
 	{
 	    cin >> w;
-        auto start = std::chrono::high_resolution_clock::now();
-        //ht->insert(w);
-        auto stop = std::chrono::high_resolution_clock::now();
-
-        std::chrono::duration<double, std::milli> execTime = stop - start;
-	    cout << "2-5: " << execTime.count() << endl;
+	    auto start = std::chrono::high_resolution_clock::now();
+	    //ht->insert(w);
+	    a->head = a->insert(w, a->head);
+	    auto stop = std::chrono::high_resolution_clock::now();
+	    std::chrono::duration<double, std::milli> execTime = stop - start;
+	    cout << "AVL: " << execTime.count() << "s" << endl;
+	    
+	    start = std::chrono::high_resolution_clock::now();
+	    
+	    stop = std::chrono::high_resolution_clock::now();
+	    execTime = stop - start;
+	    cout << "2-5: " << execTime.count() << "s" << endl;
 	    break;
 	}
 
@@ -212,11 +285,16 @@ int main(){
 	{
 	    cin >> w;
 	    auto start = std::chrono::high_resolution_clock::now();
-	    //ht->remove(w);
+	    a->head = a->remove(w, a->head);
 	    auto stop = std::chrono::high_resolution_clock::now();
-
 	    std::chrono::duration<double, std::milli> execTime = stop - start;
-	    cout << "2-5: " << execTime.count() << endl;
+	    cout << "AVL: " << execTime.count() << "s" << endl;
+	    
+	    start = std::chrono::high_resolution_clock::now();
+	    
+	    stop = std::chrono::high_resolution_clock::now();
+            execTime = stop - start;
+            cout << "2-5: " << execTime.count() << "s" << endl;
 	    break;
 	}
 
@@ -224,12 +302,17 @@ int main(){
       case 4:
 	{
 		cin >> w;
-	    auto start = std::chrono::high_resolution_clock::now();
-  	    //ht->sort(w);
+		auto start = std::chrono::high_resolution_clock::now();
+		a->sort(w, a->head);
 		auto stop = std::chrono::high_resolution_clock::now();
-
 		std::chrono::duration<double, std::milli> execTime = stop - start;
-		cout << "2-5: " << execTime.count() << endl;
+		cout << "AVL: " << execTime.count() << "s" << endl;
+
+		start = std::chrono::high_resolution_clock::now();
+
+		stop = std::chrono::high_resolution_clock::now();
+		execTime = stop - start;
+		cout << "2-5: " << execTime.count() << "s" << endl;
 	    break;
 	}
 
@@ -240,11 +323,16 @@ int main(){
 		cin >> w;
 		cin >> w2;
 		auto start = std::chrono::high_resolution_clock::now();
-		//ht->rangeSearch(w, w2);
+		a->rangeSearch(w, w2, a->head);
 		auto stop = std::chrono::high_resolution_clock::now();
-
 		std::chrono::duration<double, std::milli> execTime = stop-start;
-		cout << "2-5: " << execTime.count() << endl;
+		cout << "AVL: " << execTime.count() << "s" << endl;
+		
+		start = std::chrono::high_resolution_clock::now();
+		
+                stop = std::chrono::high_resolution_clock::now();
+                execTime = stop - start;
+                cout << "2-5: " << execTime.count() << "s" << endl;
 		break;
       }
     default:
