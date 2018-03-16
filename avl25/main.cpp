@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include <unordered_set>
 
 using namespace std;
 
@@ -29,22 +29,21 @@ void read_directory(const string& name, vector<string>* v){
 
 // Parse_text - Takes a pathname and vector address, and adds words to vector from file as long as they are
 // alphabetical and do not match any of the stopwords
-void parse_text(const string& name, vector<string>* v, unordered_map<string, int>* stopwords ){
+void parse_text(const string& name, vector<string>* v, unordered_set<string>* stopwords ){
   ifstream inFile(name);
   string str;
 
   while(inFile >> str){
         
     bool all_alpha  = std::regex_match(str, std::regex("^[A-Za-z']+$"));
-    bool not_stopword = true;
+    bool stopword = false;
     for(int i=0; str[i]; i++) str[i] = tolower(str[i]);
 
-   
-    if(stopwords->at(str) == 1){
-		not_stopword = false;
+    if(stopwords->find(str) != stopwords->end()){
+		stopword = true;
     }
     
-    if(all_alpha && not_stopword)
+    if(all_alpha && !stopword)
       v->push_back(str);
   }
 
@@ -74,20 +73,23 @@ int main(){
   }
 
   // builds map of stopwords for efficient checking
-  ifstream inFile(stopwords.txt);
+  ifstream inFile2("stopword.txt");
   string sw;
-  std::unordered_map<string, int> stopwords;
-  while(inFile >> sw){
-  	stopwords.insert(sw, 1);
+  std::unordered_set<string> stopwords;
+  while(inFile2 >> sw){
+    stopwords.insert(sw);
   }
-  inFile.close();
+  inFile2.close();
 
   // parses the text from each filename found and adds eligible words to list
   vector<string> words;
   for(unsigned int i = 0; i<filenames.size(); i++){
     parse_text(filenames.at(i), &words, &stopwords);
   }
-
+  cout << "Parsed text";
+  for(std::string element : stopwords){
+    cout << element << ": stopword \n";
+  }
   //initializes trees and inserts all words from list
   //INIT HERE
   for(unsigned int i = 0; i<words.size(); i++){
@@ -180,11 +182,11 @@ int main(){
 	{
 	  cin >> w;
 		auto start = std::chrono::high_resolution_clock::now();
-	    int result = 0 //ht->search(w);
+		int result = 0; //ht->search(w);
 	    auto stop = std::chrono::high_resolution_clock::now();
 
 		std::chrono::duration<double, std::milli> execTime = stop - start;
-		if(result == -1)
+		if(result == 0)
 		    cout << "false" << endl;
 		else
 		    cout << "true" << endl;

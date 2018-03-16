@@ -13,13 +13,11 @@ using namespace std;
     int n; // Current # of entries
   };
 
-treeNode* nodeInit(Entry e, treeNode* child, treeNode* parent){
+treeNode* nodeInit(){
     treeNode* newNode = new treeNode;
-    newNode->entries[0] = e;
-    newNode->children[0] = child;
-    newNode->leaf = child == NULL;
-    newNode->n = 1;
+    newNode->n = 0;
     newNode->children = new treeNode*[5];
+    newNode->entries = new Entry[4];
     return newNode;
   }
 
@@ -103,5 +101,9 @@ void insertNonFull(Entry e, treeNode* node){
 void insertMax(Entry e);
 void splitChild(tree25Node* node, int index, treeNode* child ){
   treeNode* child2 = nodeInit();
+  child2->parent = node;
+  child2->leaf = child->leaf;
+  child2->n = i;
+  for()int j=0; j<child->n-
 }
 
