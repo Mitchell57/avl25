@@ -52,7 +52,7 @@ void tree25::insert(string w){
 
 void tree25::remove(string w, tree25::treeNode* x){
   int i = 0;
-  while (i <= x->n && w.compare(x->entries[i].getWord()) == 1){
+  while (i < x->n && w.compare(x->entries[i].getWord()) > 0){
     i++;
   }
   if (i <= x->n && w.compare(x->entries[i].getWord()) == 0){
@@ -61,6 +61,9 @@ void tree25::remove(string w, tree25::treeNode* x){
     }
     if (x->leaf && x->n > 1){
       x->entries[i] = Entry();
+      for (int j = i; j < x->n-1; j++){
+	x->entries[j] = x->entries[j+1];
+      }
       x->n--;
     }
     else if (x->children[i]->n > 1){
@@ -85,56 +88,39 @@ void tree25::remove(string w, tree25::treeNode* x){
     }
   }
   else{
-    if (x->children[i]->n > 1){
-      remove(w, x->children[i]);
-    }
-    else{
-      int ls = 1;
-      int lS = 0;
-      for (int j = 0; j < 5; j++){
-	if (x->children[j]->n > ls){
-	  ls = x->children[j]->n;
-	  lS = j;
-	}
-      }
-      if (ls > 1){
-	x->children[i]->entries[1] = x->entries[i];
-	x->entries[i] = x->children[lS]->entries[x->children[lS]->n-1];
-	x->children[i]->children[2] = x->children[lS]->children[x->children[lS]->n];
-	x->children[i]->n++;
-	x->children[lS]->n--;
+    if (!x->leaf){
+      if (x->children[i]->n > 1){
 	remove(w, x->children[i]);
       }
       else{
-	x->children[i]->entries[1] = x->entries[i];
-	x->children[i]->entries[2] = x->children[lS]->entries[x->children[lS]->n-1];
-	x->children[lS] = NULL;
-	x->children[i]->n = 3;
-	x->n--;
-	remove(w, x->children[i]);
+	int ls = 1;
+	int lS = 0;
+	for (int j = 0; j < 5; j++){
+	  if (x->children[j]->n > ls){
+	    ls = x->children[j]->n;
+	    lS = j;
+	  }
+	}
+	if (ls > 1){
+	  x->children[i]->entries[1] = x->entries[i];
+	  x->entries[i] = x->children[lS]->entries[x->children[lS]->n-1];
+	  x->children[i]->children[2] = x->children[lS]->children[x->children[lS]->n];
+	  x->children[i]->n++;
+	  x->children[lS]->n--;
+	  remove(w, x->children[i]);
+	}
+	else{
+	  x->children[i]->entries[1] = x->entries[i];
+	  x->children[i]->entries[2] = x->children[lS]->entries[x->children[lS]->n-1];
+	  x->children[lS] = NULL;
+	  x->children[i]->n = 3;
+	  x->n--;
+	  remove(w, x->children[i]);
+	}
       }
     }
   }
 }
-
-tree25::treeNode* tree25::getParent(tree25::treeNode* c, tree25::treeNode* x){
-  for (int i = 0; i < 5; i++){
-    if (x->children[i] == c){
-      return x;
-    }
-  }
-  int i	= 0;
-  while	(i <= x->n && (c->entries[0].getWord()).compare(x->entries[i].getWord()) == 1){
-    i++;
-  }
-  if (x->leaf){
-    return NULL;
-  }
-  else{
-    return getParent(c, x->children[i]);
-  }
-}
-
 
 Entry* tree25::searchForInsert(string w, tree25::treeNode* x){
   int i=0;
@@ -269,7 +255,9 @@ void tree25::traversal(tree25::treeNode* node){
     testTree->insert("words");
 
     testTree->traversal(testTree->getRoot());
+    testTree->remove("captain", testTree->getRoot());
 
+    testTree->traversal(testTree->getRoot());
   }
 
   
