@@ -5,6 +5,7 @@
 #define TREE25_H
 
 #include <string>
+#include "entry.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ class tree25 {
   bool searchHelper(string w, treeNode* x);
   Entry* searchForInsert(string w, treeNode* x);
   // helper funcs
-  void insertNonFull(Entry* e, treeNode* node);
+  void insertNonFull(string w, treeNode* node);
   void splitChild(treeNode* node, int i, treeNode* child);
   void traversal(treeNode* node, vector<string>* v);
   //delete

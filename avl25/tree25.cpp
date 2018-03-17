@@ -45,10 +45,10 @@ void tree25::insert(string w){
     newRoot->n = 0;
     newRoot->children[0] = r;
     splitChild(root, 0, r);
-    insertNonFull(e, root);
+    insertNonFull(w, root);
   }
   else{
-    insertNonFull(e, root);
+    insertNonFull(w, root);
   }
 }
 
@@ -187,38 +187,49 @@ void tree25::sort(string path){
   wordsFile << endl;
   wordsFile.close();
 }
+/*
+void rangeSearch(string w1, string w2){
+  Entry* start = search(w1);
+  vector<string> rangeWords;
+  if()
 
-//void rangeSearch(string w1, string w2);
+ 
+  traversal(root, &rangeWords);
 
-void tree25::insertNonFull(Entry* e, tree25::treeNode* node){
+  int start = 0;
+  int stop = 0
+  for(int i)
+}
+*/
+void tree25::insertNonFull(string w, tree25::treeNode* node){
   int i = node->n;
   if(node->leaf){ 
     while(i >= 1 &&
-	  (e->getWord().compare(node->entries[i].getWord()) < 0 || node->entries[i].getWord().length()<1)
+	  (w.compare(node->entries[i].getWord()) < 0 || node->entries[i].getWord().length()<1)
 	 ){
-      if( !(e->getWord().compare(node->entries[i-1].getWord()) < 0) ) break;
+      if( !(w.compare(node->entries[i-1].getWord()) < 0) ) break;
       node->entries[i] = node->entries[i-1];
       node->children[i] = node->children[i-1];
       i--;
      
     }
-    Entry e1 = Entry(e->getWord(), e->getCount());
-    node->entries[i] = e1;
+    Entry e = Entry(w, 1);
+    node->entries[i] = e;
     node->n++;
   }
   else{
     while(i >= 1 &&
-	  e->getWord().compare(node->entries[i-1].getWord()) < 0)
+	  w.compare(node->entries[i-1].getWord()) < 0)
     {
       i--;
     }
     if(node->children[i]->n == 4){
       splitChild(node, i, node->children[i]);
-      if(e->getWord().compare(node->entries[i].getWord()) > 0){
+      if(w.compare(node->entries[i].getWord()) > 0){
 	i++;
       }
     }
-    insertNonFull(e, node->children[i]);
+    insertNonFull(w, node->children[i]);
     
   }
   
@@ -269,27 +280,3 @@ void tree25::traversal(tree25::treeNode* node, vector<string>* v){
   }
 }
 
-  int main() {
-    tree25* testTree = new tree25();
-    testTree->insert("apple");
-    testTree->insert("boy");
-    testTree->insert("boy");
-    testTree->insert("dog");
-    testTree->insert("cat");
-    testTree->insert("airplane");
-
-    //testTree->traversal(tree25::root);
-    
-    testTree->insert("fish");
-    testTree->insert("captain");
-    testTree->insert("weed");
-    testTree->insert("boy");
-    testTree->insert("long");
-    testTree->insert("words");
-
-    if(testTree->search("fish"))cout << "Search for fish successful " << endl;
-
-    testTree->sort("treesorttext.txt");
-  }
-
-  

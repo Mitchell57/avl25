@@ -87,8 +87,9 @@ int main(){
   
   // parses the text from each filename found and adds eligible words to list
   vector<string> words;
-  for(unsigned int i = 0; i<5; i++){
+  for(unsigned int i = 0; i<filenames.size(); i++){
     parse_text(filenames.at(i), &words, &stopwords);
+    
   }
   cout << "Parsed text";
 
