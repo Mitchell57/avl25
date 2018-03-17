@@ -25,7 +25,7 @@ class tree25 {
 
   //insert
   void insert(string w);
-
+  
   treeNode* nodeInit();
   bool search(string w, treeNode* x);
   Entry* searchForInsert(string w, treeNode* x);
@@ -34,9 +34,11 @@ class tree25 {
   void splitChild(treeNode* node, int i, treeNode* child);
   void traversal(treeNode* node);
   //delete
-  //  void remove(string word);
+  void remove(string word, treeNode* x);
   treeNode* getRoot();
-  
+  treeNode* getParent(treeNode* c, treeNode* x);
+  void transfer(treeNode* x, int i);
+  void fuse(treeNode* x, int i);
   //sort
   //  void sort(string path);
 

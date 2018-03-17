@@ -35,7 +35,14 @@ class Entry {
   // functions to increment and decrement count
   void countUp(){ count += 1; }
   void countDown(){ count -= 1; }
-  
+
+  /*  Entry operator=(Entry b){
+    Entry n;
+    n.word = b.getWord();
+    n.count = b.getCount();
+    return n;
+  }
+  */
  private:
   string word;
   int count;
