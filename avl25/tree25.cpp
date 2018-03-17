@@ -36,7 +36,6 @@ void tree25::insert(string w){
     result->countUp();
     return;
   }
-  Entry* e = new Entry(w, 1);
   tree25::treeNode* r = root;
   if(root->n >= 4){
     tree25::treeNode* newRoot = nodeInit();
@@ -211,20 +210,12 @@ void tree25::sort(string path){
   wordsFile << endl;
   wordsFile.close();
 }
-/*
+
 void rangeSearch(string w1, string w2){
-  Entry* start = search(w1);
   vector<string> rangeWords;
   if()
-
- 
-  traversal(root, &rangeWords);
-
-  int start = 0;
-  int stop = 0
-  for(int i)
 }
-*/
+
 void tree25::insertNonFull(string w, tree25::treeNode* node){
   int i = node->n;
   if(node->leaf){ 
@@ -291,15 +282,30 @@ tree25::treeNode* tree25::getRoot(){
   return root;
 }
 
+void tree25::traversalTest(tree25::treeNode* node){
+  int i;
+  if(node != NULL) {
+    for(i=0; i<node->n; i++){
+      traversalTest(node->children[i]);
+      cout << node->entries[i].getWord();
+    }
+    traversalTest(node->children[i]);
+  }
+  else{
+  }
+}
+
 void tree25::traversal(tree25::treeNode* node, vector<string>* v){
   int i;
   if(node != NULL) {
     for(i=0; i<node->n; i++){
       traversal(node->children[i], v);
-      v->push_back(node->entries[i].getWord());
+      cout << node->entries[i].getWord();
     }
     traversal(node->children[i], v);
   }
   else{
   }
 }
+
+

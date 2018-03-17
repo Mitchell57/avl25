@@ -35,6 +35,7 @@ class tree25 {
   void insertNonFull(string w, treeNode* node);
   void splitChild(treeNode* node, int i, treeNode* child);
   void traversal(treeNode* node, vector<string>* v);
+  void traversalTest(treeNode* node);
   //delete
   void remove(string word, treeNode* x);
   treeNode* getRoot();
