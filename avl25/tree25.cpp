@@ -52,7 +52,7 @@ void tree25::insert(string w){
 
 void tree25::remove(string w, tree25::treeNode* x){
   int i = 0;
-  while (i <= x->n && w.compare(x->entries[i].getWord()) == 1){
+  while (i <= x->n && w.compare(x->entries[i].getWord()) > 0){
     i++;
   }
   if (i <= x->n && w.compare(x->entries[i].getWord()) == 0){
@@ -138,10 +138,10 @@ tree25::treeNode* tree25::getParent(tree25::treeNode* c, tree25::treeNode* x){
 
 Entry* tree25::searchForInsert(string w, tree25::treeNode* x){
   int i=0;
-  while(i<=x->n && w.compare(x->entries[i].getWord()) == 1){
+  while(i<x->n && w.compare(x->entries[i].getWord()) > 0){
     i++;
   }
-  if(i <= x->n && w.compare(x->entries[i].getWord()) == 0){
+  if(i < x->n && w.compare(x->entries[i].getWord()) == 0){
     return &(x->entries[i]);
   }
   if(x->leaf){
@@ -154,10 +154,10 @@ Entry* tree25::searchForInsert(string w, tree25::treeNode* x){
 
 bool tree25::search(string w, tree25::treeNode* x){
   int i=0;
-  while(i<=x->n && w.compare(x->entries[i].getWord()) == 1){
+  while(i<x->n && w.compare(x->entries[i].getWord()) > 0){
     i++;
   }
-  if(i <= x->n && w.compare(x->entries[i].getWord()) == 0){
+  if(i < x->n && w.compare(x->entries[i].getWord()) == 0){
     return true;
   }
   if(x->leaf){
@@ -176,9 +176,9 @@ void tree25::insertNonFull(Entry* e, tree25::treeNode* node){
   int i = node->n;
   if(node->leaf){ 
     while(i >= 1 &&
-	  (e->getWord().compare(node->entries[i].getWord()) == -1 || node->entries[i].getWord().length()<1)
+	  (e->getWord().compare(node->entries[i].getWord()) < 0 || node->entries[i].getWord().length()<1)
 	 ){
-      if( !(e->getWord().compare(node->entries[i-1].getWord()) == -1) ) break;
+      if( !(e->getWord().compare(node->entries[i-1].getWord()) < 0) ) break;
       node->entries[i] = node->entries[i-1];
       node->children[i] = node->children[i-1];
       i--;
@@ -190,13 +190,13 @@ void tree25::insertNonFull(Entry* e, tree25::treeNode* node){
   }
   else{
     while(i >= 1 &&
-	  (e->getWord().compare(node->entries[i-1].getWord()) == -1 || node->entries[i].getWord().length()<1))
+	  e->getWord().compare(node->entries[i-1].getWord()) < 0)
     {
       i--;
     }
     if(node->children[i]->n == 4){
       splitChild(node, i, node->children[i]);
-      if(e->getWord().compare(node->entries[i].getWord()) == 1){
+      if(e->getWord().compare(node->entries[i].getWord()) > 0){
 	i++;
       }
     }
