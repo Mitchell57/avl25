@@ -28,7 +28,24 @@ tree25::tree25(){
     
   }
 
-//~tree25();
+~tree25(){
+  
+}
+
+void tree25::clear(treeNode* node){
+  if(!node->leaf){
+    for(int i=0; i<=node->n; i++){
+      clear(node->children[i]);
+      delete node->children[i];
+    }
+    
+  }
+
+  delete [] node->entries;
+  delete node->leaf;
+  delete node->n;
+  
+}
 
 void tree25::insert(string w){
   Entry* result = searchForInsert(w, root);
@@ -211,10 +228,7 @@ void tree25::sort(string path){
   wordsFile.close();
 }
 
-void rangeSearch(string w1, string w2){
-  vector<string> rangeWords;
-  if()
-}
+
 
 void tree25::insertNonFull(string w, tree25::treeNode* node){
   int i = node->n;
@@ -282,22 +296,30 @@ tree25::treeNode* tree25::getRoot(){
   return root;
 }
 
-void tree25::traversalTest(tree25::treeNode* node){
+void tree25::rangeSearch(string w1, string w2,tree25::treeNode* node){
   int i;
-  if(node != NULL) {
+  if(!node->leaf) {
     for(i=0; i<node->n; i++){
-      traversalTest(node->children[i]);
-      cout << node->entries[i].getWord();
+      rangeSearch(w1, w2, node->children[i]);
+      if (w1.compare(node->entries[i].getWord()) <= 0 && w2.compare(node->entries[i].getWord())){
+	  cout << node->entries[i].getWord();
+	}
+	}
+      rangeSearch(w1, w2, node->children[i]);
     }
-    traversalTest(node->children[i]);
-  }
-  else{
+    else{
+      for (i = 0; i<node->n; i++){
+	if (w1.compare(node->entries[i].getWord()) <= 0 && w2.compare(node->entries[i].getWord())){
+	cout << node->entries[i].getWord() << endl;
+	  }
+      }
+    }
   }
 }
 
 void tree25::traversal(tree25::treeNode* node, vector<string>* v){
   int i;
-  if(node != NULL) {
+  if(!node->leaf) {
     for(i=0; i<node->n; i++){
       traversal(node->children[i], v);
       cout << node->entries[i].getWord();
@@ -305,6 +327,9 @@ void tree25::traversal(tree25::treeNode* node, vector<string>* v){
     traversal(node->children[i], v);
   }
   else{
+    for (i = 0; i<node->n; i++){
+      v->push_back(node->entries[i].getWord());
+    }
   }
 }
 
