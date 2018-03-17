@@ -45,7 +45,7 @@ class tree25 {
   void sort(string path);
 
   //range search
-  // void rangeSearch(string w1, string w2);
+  void rangeSearch(string w1, string w2, treeNode* node);
 
  private:
   treeNode *root, *np, *x;

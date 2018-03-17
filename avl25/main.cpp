@@ -87,7 +87,7 @@ int main(){
   
   // parses the text from each filename found and adds eligible words to list
   vector<string> words;
-  for(unsigned int i = 0; i<5; i++){
+  for(unsigned int i = 0; i<filenames.size(); i++){
     parse_text(filenames.at(i), &words, &stopwords);
   }
   cout << "Parsed text";
@@ -189,19 +189,19 @@ int main(){
   //Range Search for 10, 100, and 1000 words
   // Used sorted output file to choose increments of 10, 100, and 1000 words
   start = std::chrono::high_resolution_clock::now();
-  //ht->rangeSearch("annual", "answers");
+  t->rangeSearch("annual", "answers", t->getRoot());
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
   cout << "2-5 range search (n=10): " << execTime.count() << endl;
 
   start = std::chrono::high_resolution_clock::now();
-  //->rangeSearch("annual", "applied");
+  t->rangeSearch("annual", "applied", t->getRoot());
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
   cout << "2-5 range search (n=100): " << execTime.count() << endl;
 
   start = std::chrono::high_resolution_clock::now();
-  //ht->rangeSearch("annual", "breezy");
+  t->rangeSearch("annual", "breezy", t->getRoot());
   stop = std::chrono::high_resolution_clock::now();
   execTime = stop - start;
   cout << "2-5 range search (n=1000): " << execTime.count() << endl;
@@ -286,7 +286,7 @@ int main(){
 	    cout << "AVL: " << execTime.count() << "s" << endl;
 	    
 	    start = std::chrono::high_resolution_clock::now();
-	    
+	    t->remove(w, t->getRoot());
 	    stop = std::chrono::high_resolution_clock::now();
             execTime = stop - start;
             cout << "2-5: " << execTime.count() << "s" << endl;
@@ -304,7 +304,7 @@ int main(){
 		cout << "AVL: " << execTime.count() << "s" << endl;
 
 		start = std::chrono::high_resolution_clock::now();
-    t->sort(w);
+		t->sort(w);
 		stop = std::chrono::high_resolution_clock::now();
 		execTime = stop - start;
 		cout << "2-5: " << execTime.count() << "s" << endl;
@@ -324,7 +324,7 @@ int main(){
 		cout << "AVL: " << execTime.count() << "s" << endl;
 		
 		start = std::chrono::high_resolution_clock::now();
-		
+		t->rangeSearch(w, w2, t->getRoot());
                 stop = std::chrono::high_resolution_clock::now();
                 execTime = stop - start;
                 cout << "2-5: " << execTime.count() << "s" << endl;

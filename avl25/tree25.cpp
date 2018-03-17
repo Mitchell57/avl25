@@ -295,18 +295,17 @@ void tree25::rangeSearch(string w1, string w2,tree25::treeNode* node){
   int i;
   if(!node->leaf) {
     for(i=0; i<node->n; i++){
-      traversal(node->children[i], v);
-      if (w1.compare(node->entries[i].getWord() <= 0 && w2.compare(node->entries[i].getWord())){
-	  cout << node->entries[i].getWord();
-	}
-	}
-      traversal(node->children[i], v);
-    }
-    else{
-      for (i = 0; i<node->n; i++){
-	if (w1.compare(node->entries[i].getWord() <= 0 && w2.compare(node->entries[i].getWord())){
+      rangeSearch(w1, w2,node->children[i]);
+      if (w1.compare(node->entries[i].getWord()) <= 0 && w2.compare(node->entries[i].getWord()) >= 0){
 	cout << node->entries[i].getWord() << endl;
-	  }
+      }
+    }
+    rangeSearch(w1, w2, node->children[i]);
+  }
+  else{
+    for (i = 0; i<node->n; i++){
+      if (w1.compare(node->entries[i].getWord()) <= 0 && w2.compare(node->entries[i].getWord()) >= 0){
+	cout << node->entries[i].getWord() << endl;
       }
     }
   }
