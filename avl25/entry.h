@@ -35,7 +35,13 @@ class Entry {
   // functions to increment and decrement count
   void countUp(){ count += 1; }
   void countDown(){ count -= 1; }
-  
+
+  Entry operator=(const Entry b){
+    Entry n;
+    n.word = b.word;
+    n.count = b.count;
+    return n;
+  }
  private:
   string word;
   int count;

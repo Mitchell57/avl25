@@ -25,18 +25,20 @@ class tree25 {
 
   //insert
   void insert(string w);
-
+  
   treeNode* nodeInit();
   Entry* search(string w, treeNode* x);
-
+  
   // helper funcs
   void insertNonFull(Entry* e, treeNode* node);
   void splitChild(treeNode* node, int i, treeNode* child);
   void traversal(treeNode* node);
   //delete
-  //  void remove(string word);
+  void remove(string word, treeNode* x);
   treeNode* getRoot();
-  
+  treeNode* getParent(treeNode* c, treeNode* x);
+  void transfer(treeNode* x, int i);
+  void fuse(treeNode* x, int i);
   //sort
   //  void sort(string path);
 
