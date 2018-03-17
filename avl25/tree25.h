@@ -43,6 +43,8 @@ class tree25 {
   void fuse(treeNode* x, int i);
   //sort
   void sort(string path);
+  void clear(treeNode * node);
+  
 
   //range search
   void rangeSearch(string w1, string w2, treeNode* node);

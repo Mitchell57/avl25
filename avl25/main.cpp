@@ -109,8 +109,9 @@ int main(){
 	  std::chrono::duration<double, std::milli> execTime = stop - start;
 	  cout << "Hash/BST: " << execTime.count() << endl;
   */
-  t->sort("sorted.txt");
+  
   // Timing tests - sorts words, then grabs 100 words to test times
+  t->sort("sorted.txt");
   ifstream inFile("sorted.txt");
   vector<string> testSet;
   string str;
