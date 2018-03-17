@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include <fstream>
 #include "entry.h"
 #include "tree25.h"
 
@@ -152,7 +154,7 @@ Entry* tree25::searchForInsert(string w, tree25::treeNode* x){
   }
 }
 
-bool tree25::search(string w, tree25::treeNode* x){
+bool tree25::searchHelper(string w, tree25::treeNode* x){
   int i=0;
   while(i<x->n && w.compare(x->entries[i].getWord()) > 0){
     i++;
@@ -164,11 +166,27 @@ bool tree25::search(string w, tree25::treeNode* x){
     return false;
   }
   else{
-    return search(w, x->children[i]);
+    return searchHelper(w, x->children[i]);
   }
 }
 
-//void sort(string path);
+bool tree25::search(string w){
+  return searchHelper(w, root);
+}
+
+void tree25::sort(string path){
+  vector<string> sortedWords;
+  traversal(root, &sortedWords);
+
+  ofstream wordsFile;
+  wordsFile.open(path);
+    
+  for(unsigned int i=0; i<sortedWords.size(); i++){
+    wordsFile << sortedWords.at(i) << endl;
+  }
+  wordsFile << endl;
+  wordsFile.close();
+}
 
 //void rangeSearch(string w1, string w2);
 
@@ -238,15 +256,14 @@ tree25::treeNode* tree25::getRoot(){
   return root;
 }
 
-void tree25::traversal(tree25::treeNode* node){
+void tree25::traversal(tree25::treeNode* node, vector<string>* v){
   int i;
   if(node != NULL) {
     for(i=0; i<node->n; i++){
-      traversal(node->children[i]);
-      cout << node->entries[i].getWord() << " ";
+      traversal(node->children[i], v);
+      v->push_back(node->entries[i].getWord());
     }
-    traversal(node->children[i]);
-    cout << endl << endl;
+    traversal(node->children[i], v);
   }
   else{
   }
@@ -255,6 +272,7 @@ void tree25::traversal(tree25::treeNode* node){
   int main() {
     tree25* testTree = new tree25();
     testTree->insert("apple");
+    testTree->insert("boy");
     testTree->insert("boy");
     testTree->insert("dog");
     testTree->insert("cat");
@@ -265,11 +283,13 @@ void tree25::traversal(tree25::treeNode* node){
     testTree->insert("fish");
     testTree->insert("captain");
     testTree->insert("weed");
+    testTree->insert("boy");
     testTree->insert("long");
     testTree->insert("words");
 
-    testTree->traversal(testTree->getRoot());
+    if(testTree->search("fish"))cout << "Search for fish successful " << endl;
 
+    testTree->sort("treesorttext.txt");
   }
 
   
