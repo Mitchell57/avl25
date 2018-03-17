@@ -29,7 +29,7 @@ tree25::tree25(){
   }
 
 ~tree25(){
-  
+  clear(root);
 }
 
 void tree25::clear(treeNode* node){
