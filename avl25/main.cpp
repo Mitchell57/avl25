@@ -87,7 +87,7 @@ int main(){
   
   // parses the text from each filename found and adds eligible words to list
   vector<string> words;
-  for(unsigned int i = 0; i<5; i++){
+  for(unsigned int i = 0; i<filenames.size(); i++){
     parse_text(filenames.at(i), &words, &stopwords);
   }
   cout << "Parsed text";
@@ -109,8 +109,9 @@ int main(){
 	  std::chrono::duration<double, std::milli> execTime = stop - start;
 	  cout << "Hash/BST: " << execTime.count() << endl;
   */
-  t->sort("sorted.txt");
+  
   // Timing tests - sorts words, then grabs 100 words to test times
+  t->sort("sorted.txt");
   ifstream inFile("sorted.txt");
   vector<string> testSet;
   string str;
