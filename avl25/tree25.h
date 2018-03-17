@@ -27,12 +27,13 @@ class tree25 {
   void insert(string w);
   
   treeNode* nodeInit();
-  bool search(string w, treeNode* x);
+  bool search(string w);
+  bool searchHelper(string w, treeNode* x);
   Entry* searchForInsert(string w, treeNode* x);
   // helper funcs
   void insertNonFull(Entry* e, treeNode* node);
   void splitChild(treeNode* node, int i, treeNode* child);
-  void traversal(treeNode* node);
+  void traversal(treeNode* node, vector<string>* v);
   //delete
   void remove(string word, treeNode* x);
   treeNode* getRoot();
@@ -40,7 +41,7 @@ class tree25 {
   void transfer(treeNode* x, int i);
   void fuse(treeNode* x, int i);
   //sort
-  //  void sort(string path);
+  void sort(string path);
 
   //range search
   // void rangeSearch(string w1, string w2);
