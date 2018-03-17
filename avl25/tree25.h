@@ -27,8 +27,8 @@ class tree25 {
   void insert(string w);
 
   treeNode* nodeInit();
-  Entry* search(string w, treeNode* x);
-
+  bool search(string w, treeNode* x);
+  Entry* searchForInsert(string w, treeNode* x);
   // helper funcs
   void insertNonFull(Entry* e, treeNode* node);
   void splitChild(treeNode* node, int i, treeNode* child);
